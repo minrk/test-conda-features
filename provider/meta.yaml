@@ -1,0 +1,25 @@
+{% set name = "provider" + os.environ['PROVIDER'] %}
+{% set use_features = not os.getenv('NO_FEATURES') %}
+{% if use_features %}
+{% set build = 1 %}
+{% else %}
+# earlier build has no features
+{% set build = 0 %}
+{% endif %}
+package:
+  name: {{ name }}
+  version: 1.0.0
+
+build:
+  number: {{ build }}
+  script: touch $PREFIX/{{ name }}
+  {% if use_features %}
+  features:
+    - {{ name }}
+  {% endif %}
+
+{% if use_features %}
+requirements:
+  run:
+    - meta * {{ name }}
+{% endif %}

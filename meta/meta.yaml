@@ -1,0 +1,12 @@
+{% set name = "meta" %}
+{% set provider = 'provider' + os.environ['PROVIDER'] %}
+# prefer y to x
+{% set Y = 1 if provider == 'providery' else 0 %}
+package:
+  name: {{ name }}
+  version: 1.{{ Y }}
+
+build:
+  string: {{ provider }}
+  track_features:
+    - {{ provider }}
