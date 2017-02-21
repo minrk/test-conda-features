@@ -13,12 +13,12 @@ conda create $ARGS -p $tmpdir/test-y providery consumer
 
 # should get x
 conda create $ARGS -p $tmpdir/test-2-step providerx
-# should stick with x (doesn't)
+# should stick with x
 conda install $ARGS -p $tmpdir/test-2-step consumer
 
-# should keep x + consumer
+# should get x + consumer (ok)
 conda create $ARGS -p $tmpdir/test-upgrade-all providerx consumer
-# should stick with x (doesn't)
+# should stick with x (doesn't: downgrades providerx-x_1 to providerx-0)
 conda upgrade --all -p $tmpdir/test-upgrade-all $ARGS
 
 set +x
