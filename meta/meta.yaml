@@ -1,7 +1,8 @@
 {% set name = "meta" %}
 {% set provider = 'provider' + os.environ['PROVIDER'] %}
-# prefer y to x
-{% set Y = 1 if provider == 'providery' else 0 %}
+# expressing no preference solves `upgrade --all` case
+# {% set Y = 1 if provider == 'providery' else 0 %}
+{% set Y = 0 %}
 package:
   name: {{ name }}
   version: 1.{{ Y }}

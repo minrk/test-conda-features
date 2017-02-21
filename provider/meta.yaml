@@ -1,5 +1,6 @@
 {% set name = "provider" + os.environ['PROVIDER'] %}
 {% set use_features = not os.getenv('NO_FEATURES') %}
+{% set use_meta = False %}
 {% if use_features %}
 {% set build = 1 %}
 {% else %}
@@ -14,11 +15,15 @@ build:
   number: {{ build }}
   script: touch $PREFIX/{{ name }}
   {% if use_features %}
-  features:
+  {% if use_meta %}
+  features
+  {% else %}
+  track_features:
+  {% endif %}
     - {{ name }}
   {% endif %}
 
-{% if use_features %}
+{% if use_features and use_meta %}
 requirements:
   run:
     - meta * {{ name }}
