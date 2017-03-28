@@ -1,7 +1,12 @@
 {% set name = "consumer" %}
-{% set provider = "provider" + os.environ['PROVIDER'] %}
+{% if os.getenv('PROVIDER') %}
+{%   set provider = "provider" + os.environ['PROVIDER'] %}
+{% else %}
+{%   set provider = None %}
+{% endif %}
+
 {% set use_features = not os.getenv('NO_FEATURES') %}
-{% if use_features %}
+{% if use_features or not provider %}
 {% set build = 1 %}
 {% else %}
 # earlier build has no features
@@ -21,5 +26,7 @@ build:
   {% endif %}
 
 requirements:
+  {% if provider %}
   run:
     - {{ provider }}
+  {% endif %}

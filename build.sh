@@ -14,15 +14,18 @@ set -ex
 # consumer-1.0-providerx_1
 # consumer-1.0-providery_1
 
-conda build purge
+CONDA_ROOT="$HOME/conda"
+conda clean -tipsy
+rm -rf "$CONDA_ROOT/conda-bld"
+
 # build feature-tracking meta package for x and y
-PROVIDER=x conda build meta
-PROVIDER=y conda build meta
+# PROVIDER=x conda build meta
+# PROVIDER=y conda build meta
 # build before and after providers x and y,
 # so we have versions with and without features
-NO_FEATURES=1 PROVIDER=x conda build provider
+# NO_FEATURES=1 PROVIDER=x conda build provider
 PROVIDER=x conda build provider
-NO_FEATURES=1 PROVIDER=y conda build provider
+# NO_FEATURES=1 PROVIDER=y conda build provider
 PROVIDER=y conda build provider
 
 # before, we have PROVIDER=x and no features
@@ -30,4 +33,6 @@ NO_FEATURES=1 PROVIDER=x conda build consumer
 # after, we have features on both
 PROVIDER=x conda build consumer
 PROVIDER=y conda build consumer
+# also build no-features no-provider (like FFTW no-MPI)
+NO_FEATURES=1 PROVIDER='' conda build consumer
 
